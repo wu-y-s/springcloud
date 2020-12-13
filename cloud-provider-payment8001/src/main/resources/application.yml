@@ -11,6 +11,23 @@ spring:
     username: root
     password: root
 
+
 mybatis:
-  mapperLocations: classPath:mapper/*.xml
-  type-aliases-package: com.wys.springcloud.entities
+  mapperLocations: classpath:mapper/*.xml
+  type-aliases-package: com.wys.springcloud.entity
+eureka:
+  client:
+    #注册入注册中心
+    register-with-eureka: true
+    #抓取已有的注册信息，在集群配置中才能配合进行负载均衡
+    fetchRegistry: true
+    service-url:
+#      单机版
+#      defaultZone: http://localhost:7001/eureka
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+  instance:
+    instance-id: payment8001
+    prefer-ip-address: true
+#  server:
+#    enable-self-preservation: false
+#    eviction-interval-timer-in-ms: 2000
