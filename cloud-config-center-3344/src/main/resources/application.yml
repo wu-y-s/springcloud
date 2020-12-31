@@ -8,15 +8,15 @@ spring:
     config:
       server:
         git:
-          uri: git@github.com:wu-y-s/springcloud.git #GitHub上面的git仓库名字
-          ####搜索目录
+          uri: https://github.com/wu-y-s/springcloud.git #GitHub上面的git仓库名字
+          #搜索目录
           search-paths:
             - cloud-config-center
-      ####读取分支
+      #读取分支
       label: master
 #rabbitmq相关配置
 rabbitmq:
-  host: localhost
+  host: 47.99.119.199
   port: 5672
   username: guest
   password: guest
