@@ -1,31 +1,28 @@
 package com.wys.springcloud.controller;
 
-
 import com.wys.springcloud.entity.CommonResult;
 import com.wys.springcloud.entity.Payment;
 import com.wys.springcloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * @Author: wys
+ * @Description: TODO
+ * @DateTime: 2021/1/5 16:58
+ **/
 @RestController
 @Slf4j
 public class PaymentController {
-
-    @Resource
-    private PaymentService paymentService;
 
     @Value("${server.port}")
     private String serverPort;
 
     @Resource
-    private DiscoveryClient discoveryClient;
+    private PaymentService paymentService;
 
     @PostMapping(value = "/payment/add")
     public CommonResult add(@RequestBody Payment payment){
@@ -51,39 +48,8 @@ public class PaymentController {
         }
     }
 
-    @GetMapping(value = "/payment/discovery")
-    public Object discovery(){
-        List<String> services = discoveryClient.getServices();
-        for(Object element : services){
-            log.info("*element: "+element);
-        }
-
-        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
-        for(ServiceInstance instance : instances){
-            log.info(instance.getInstanceId()+"\t"+instance.getHost()+"\t"+instance.getPort()+"\t"+instance.getUri());
-        }
-
-        return this.discoveryClient;
+    @GetMapping(value = "/payment/nacos/{id}")
+    public String getPayment(@PathVariable("id") Integer id){
+        return serverPort+"<->==:|:==<->"+id;
     }
-
-    @GetMapping(value = "/payment/lb")
-    public String getPaymentLB(){
-        return serverPort;
-    }
-
-    @GetMapping(value = "/payment/feign/timeout")
-    public String paymentFeignTimeOut() {
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return serverPort;
-    }
-
-    @GetMapping(value = "/payment/zipkin")
-    public String paymentZipkin(){
-        return "zipkin";
-    }
-
 }
